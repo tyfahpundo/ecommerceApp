@@ -2,6 +2,7 @@ package zw.co.afrosoft.ecommerceapp.service;
 
 import org.springframework.stereotype.Service;
 import zw.co.afrosoft.ecommerceapp.model.AuthenticationToken;
+import zw.co.afrosoft.ecommerceapp.model.User;
 import zw.co.afrosoft.ecommerceapp.repository.AuthenticationTokenRepository;
 
 @Service
@@ -15,5 +16,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     @Override
     public void saveConfimationToken(AuthenticationToken authenticationToken) {
         tokenRepository.save(authenticationToken);
+    }
+
+    @Override
+    public AuthenticationToken getToken(User user) {
+        return tokenRepository.findByUser(user);
     }
 }

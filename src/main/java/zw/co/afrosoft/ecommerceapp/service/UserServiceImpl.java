@@ -2,7 +2,10 @@ package zw.co.afrosoft.ecommerceapp.service;
 
 import org.springframework.stereotype.Service;
 import zw.co.afrosoft.ecommerceapp.dto.ResponseDto;
+import zw.co.afrosoft.ecommerceapp.dto.user.SignInDto;
+import zw.co.afrosoft.ecommerceapp.dto.user.SignInResponseDto;
 import zw.co.afrosoft.ecommerceapp.dto.user.SignUpDto;
+import zw.co.afrosoft.ecommerceapp.exceptions.AuthenticationFailException;
 import zw.co.afrosoft.ecommerceapp.exceptions.CustomException;
 import zw.co.afrosoft.ecommerceapp.model.AuthenticationToken;
 import zw.co.afrosoft.ecommerceapp.model.User;
@@ -53,6 +56,31 @@ public class UserServiceImpl implements UserService{
 
         ResponseDto responseDto = new ResponseDto("success","User Created Successfully!!!");
         return responseDto;
+    }
+
+    @Override
+    public SignInResponseDto signin(SignInDto signInDto) {
+        //find user by email
+        User user = userRepository.findByEmail(signInDto.getEmail());
+        if(Objects.isNull(user)){
+            throw new AuthenticationFailException("User is not Valid!");
+        }
+        //hash the password
+        try {
+            if(!user.getPassword().equals(hashPassword(signInDto.getPassword()))){
+                throw new AuthenticationFailException("Invalid Password, please try again!");
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        //if password match
+        AuthenticationToken token = authenticationService.getToken(user);
+        if(Objects.isNull(token)){
+            throw new CustomException("Token is not present");
+        }
+        //retrieve token
+        return new SignInResponseDto("success",token.getToken());
+
     }
 
     private String hashPassword(String password) throws NoSuchAlgorithmException {
