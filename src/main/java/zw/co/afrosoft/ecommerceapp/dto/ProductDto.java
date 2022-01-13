@@ -3,8 +3,8 @@ package zw.co.afrosoft.ecommerceapp.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import zw.co.afrosoft.ecommerceapp.model.Product;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
@@ -21,4 +21,15 @@ public class ProductDto {
     private Long categoryId;
     @NotNull
     private double price;
+
+    public static ProductDto createProductDto(Product product) {
+        ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
+        productDto.setName(product.getName());
+        productDto.setDescription(product.getDescription());
+        productDto.setImageUrl(product.getImageUrl());
+        productDto.setCategoryId(product.getCategory().getId());
+        productDto.setPrice(product.getPrice());
+        return productDto;
+    }
 }
