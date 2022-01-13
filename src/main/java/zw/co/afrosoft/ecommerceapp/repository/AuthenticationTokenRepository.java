@@ -6,4 +6,6 @@ import zw.co.afrosoft.ecommerceapp.model.User;
 
 public interface AuthenticationTokenRepository extends JpaRepository<AuthenticationToken,Long> {
     AuthenticationToken findByUser(User user);
+
+    AuthenticationToken findByToken(String token);
 }

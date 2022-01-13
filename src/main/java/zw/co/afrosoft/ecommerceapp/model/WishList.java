@@ -24,4 +24,10 @@ public class WishList {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public WishList(User user, Product product) {
+        this.user = user;
+        this.product = product;
+        this.createdDate = new Date();
+    }
 }

@@ -1,5 +1,6 @@
 package zw.co.afrosoft.ecommerceapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,8 @@ public class Product {
 
     //Many to One Relationship
     @ManyToOne
-            @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id")
+    @JsonIgnore
     Category category;
 
 
