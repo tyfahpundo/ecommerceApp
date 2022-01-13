@@ -63,22 +63,22 @@ public class UserServiceImpl implements UserService{
         //find user by email
         User user = userRepository.findByEmail(signInDto.getEmail());
         if(Objects.isNull(user)){
-            throw new AuthenticationFailException("User is not Valid!");
+            throw new AuthenticationFailException("Invalid username or password, please try again!");
         }
-        //hash the password
+        //hash the password and compare with the one in DB
         try {
             if(!user.getPassword().equals(hashPassword(signInDto.getPassword()))){
-                throw new AuthenticationFailException("Invalid Password, please try again!");
+                throw new AuthenticationFailException("Invalid username or password, please try again!");
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        //if password match
+        //retrieve token
         AuthenticationToken token = authenticationService.getToken(user);
         if(Objects.isNull(token)){
             throw new CustomException("Token is not present");
         }
-        //retrieve token
+
         return new SignInResponseDto("success",token.getToken());
 
     }
