@@ -42,9 +42,7 @@ public class WishListController {
         authenticationService.authenticate(token);
         //find the user
         User user = authenticationService.getUser(token);
-
         List<ProductDto> productDtos = wishListService.getWishListForUser(user);
-
         return new ResponseEntity<>(productDtos,HttpStatus.OK);
     }
 }
