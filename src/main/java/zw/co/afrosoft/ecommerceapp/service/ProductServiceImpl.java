@@ -3,6 +3,7 @@ package zw.co.afrosoft.ecommerceapp.service;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import zw.co.afrosoft.ecommerceapp.dto.ProductDto;
+import zw.co.afrosoft.ecommerceapp.exceptions.ProductNotExistException;
 import zw.co.afrosoft.ecommerceapp.model.Category;
 import zw.co.afrosoft.ecommerceapp.model.Product;
 import zw.co.afrosoft.ecommerceapp.repository.ProductRepository;
@@ -55,5 +56,14 @@ public class ProductServiceImpl implements ProductService{
         product.setImageUrl(productDto.getImageUrl());
         product.setPrice(productDto.getPrice());
         productRepository.save(product);
+    }
+
+    @Override
+    public Product findById(Long productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if(optionalProduct.isEmpty()){
+            throw new ProductNotExistException("Product is invalid: "+ productId);
+        }
+        return  optionalProduct.get();
     }
 }

@@ -17,4 +17,7 @@ public class ExceptionControllerAdvice {
     public final ResponseEntity<String> handleAuthenticationFailException(AuthenticationFailException exception){
         return new ResponseEntity<>(exception.getMessage(),HttpStatus.BAD_REQUEST);
     }
+    public final ResponseEntity<String> handleProductNotExistsException(ProductNotExistException exception){
+        return new ResponseEntity<>(exception.getMessage(),HttpStatus.BAD_REQUEST);
+    }
 }
