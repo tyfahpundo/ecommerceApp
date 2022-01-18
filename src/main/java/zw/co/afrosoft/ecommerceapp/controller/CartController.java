@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zw.co.afrosoft.ecommerceapp.common.ApiResponse;
-import zw.co.afrosoft.ecommerceapp.dto.AddToCartDto;
-import zw.co.afrosoft.ecommerceapp.model.Product;
+import zw.co.afrosoft.ecommerceapp.dto.cart.AddToCartDto;
+import zw.co.afrosoft.ecommerceapp.dto.cart.CartDto;
 import zw.co.afrosoft.ecommerceapp.model.User;
 import zw.co.afrosoft.ecommerceapp.service.AuthenticationService;
 import zw.co.afrosoft.ecommerceapp.service.CartService;
@@ -33,6 +33,13 @@ public class CartController {
 
 
     //get all cart items for a user
+    @GetMapping("/get-cart-items")
+    public ResponseEntity<CartDto> getCartItems(@RequestParam("token") String token){
+        authenticationService.authenticate(token);
+        User user = authenticationService.getUser(token);
+        CartDto cartDto = cartService.listCartItems(user);
+        return new ResponseEntity<>(cartDto,HttpStatus.OK);
+    }
 
 
     //delete cart item for a user

@@ -1,4 +1,4 @@
-package zw.co.afrosoft.ecommerceapp.dto;
+package zw.co.afrosoft.ecommerceapp.dto.cart;
 
 import lombok.Data;
 
