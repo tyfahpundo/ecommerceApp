@@ -1,5 +1,6 @@
 package zw.co.afrosoft.ecommerceapp.controller;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,14 @@ public class CartController {
         CartDto cartDto = cartService.listCartItems(user);
         return new ResponseEntity<>(cartDto,HttpStatus.OK);
     }
-
-
     //delete cart item for a user
+    @DeleteMapping("/delete/{cartItemId}")
+    public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable("cartItemId") Long cartItemId,
+                                                      @RequestParam("token") String token){
+        authenticationService.authenticate(token);
+        User user = authenticationService.getUser(token);
+        cartService.deleteItemFromCart(cartItemId, user);
+        return new ResponseEntity<>(new ApiResponse(true,"Item successfully removed from Cart!"),HttpStatus.OK);
+    }
+
 }
