@@ -56,11 +56,8 @@ public class CartServiceImpl implements CartService{
 
     @Override
     public void deleteItemFromCart(Long cartItemId, User user) {
-        Optional<Cart> optionalCart = cartRepository.findById(cartItemId);
-        if(optionalCart.isEmpty()){
-            throw new CustomException("Cart item id is invalid: "+ cartItemId);
-        }
-        Cart cart = optionalCart.get();
+        Cart cart = cartRepository.findById(cartItemId)
+                .orElseThrow(()->new CustomException("Cart item id is invalid: "+ cartItemId));
         if(cart.getUser() != user){
             throw new CustomException("Cart item does not belong to the user: "+ cartItemId);
         }
